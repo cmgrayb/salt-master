@@ -12,10 +12,6 @@ RUN apt-get install salt-master salt-minion salt-ssh salt-syndic salt-cloud salt
 COPY salt-services.sh /usr/bin
 RUN chmod +x /usr/bin/salt-services.sh
 
-RUN systemctl enable salt-minion
-RUN systemctl enable salt-syndic
-RUN systemctl enable salt-api
-
 EXPOSE 8000 4505-4506
 
 CMD [ "/usr/bin/salt-services.sh" ]
