@@ -34,6 +34,7 @@ jobs:
         # or you can signup for free at https://snyk.io/login
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
+        command: monitor
         image: cmgrayb/salt-master:latest
         args: --file=Docker/Dockerfile
     - name: Upload result to GitHub Code Scanning
