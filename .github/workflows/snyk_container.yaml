@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build a Docker image
-      run: docker build -t cmgrayb/salt-master ./Docker
+      run: docker build Docker/Dockerfile -t cmgrayb/salt-master
     - name: Run Snyk to check Docker image for vulnerabilities
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case we want to upload the issues to GitHub Code Scanning
