@@ -1,12 +1,21 @@
-FROM debian:bullseye
+ARG DEBIAN_CODENAME=bullseye
+FROM debian:${DEBIAN_CODENAME}
 
-RUN apt update
-RUN apt install glibc-source curl systemctl -y
+ARG DEBIAN_MAJOR_VER=11
+ARG SALT_MAJOR_VER=3005
+
+# Safely fail in case of failure in piped command
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Install latest available version of curl
+RUN apt-get update
+RUN apt-get install glibc-source curl systemctl -y
 
 RUN mkdir /etc/apt/keyrings
-RUN curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring.gpg https://repo.saltproject.io/salt/py3/debian/11/amd64/latest/salt-archive-keyring.gpg
-RUN echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.gpg arch=amd64] https://repo.saltproject.io/salt/py3/debian/11/amd64/latest bullseye main" | tee /etc/apt/sources.list.d/salt.list
+RUN curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring.gpg "https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER}/salt-archive-keyring.gpg"
+RUN echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.gpg arch=amd64] https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER} bullseye main" | tee /etc/apt/sources.list.d/salt.list
 
+# Second apt-get update required to fetch from repo.saltproject.io
 RUN apt-get update
 RUN apt-get install salt-master salt-minion salt-ssh salt-syndic salt-cloud salt-api -y
 COPY salt-services.sh /usr/bin
