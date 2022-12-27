@@ -11,8 +11,8 @@ ARG SALT_VER="${SALT_MAJOR_VER}.${SALT_MINOR_VER}+${SALT_BUILD}"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install latest available version of curl
-RUN apt-get update
-RUN apt-get install glibc-source=2.31-13+deb11u5 \
+RUN apt-get update && \
+    apt-get install glibc-source=2.31-13+deb11u5 \
             curl=7.74.0-1.3+deb11u3 \
             bsdmainutils=12.1.7+nmu3 \
             dctrl-tools=2.24-3+b1 \
@@ -24,13 +24,13 @@ RUN apt-get install glibc-source=2.31-13+deb11u5 \
             && apt-get clean \
             && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /etc/apt/keyrings
-RUN curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring.gpg "https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER}/salt-archive-keyring.gpg"
-RUN echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.gpg arch=amd64] https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER} bullseye main" | tee /etc/apt/sources.list.d/salt.list
+RUN mkdir /etc/apt/keyrings && \
+    curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring.gpg "https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER}/salt-archive-keyring.gpg" && \
+    echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.gpg arch=amd64] https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER} bullseye main" | tee /etc/apt/sources.list.d/salt.list
 
 # Second apt-get update required to fetch from repo.saltproject.io
-RUN apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/salt.list
-RUN apt-get install -t "o=SaltProject,a=stable" salt-master=${SALT_VER} \
+RUN apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/salt.list && \
+    apt-get install -t "o=SaltProject,a=stable" salt-master=${SALT_VER} \
                                                 salt-minion=${SALT_VER} \
                                                 salt-ssh=${SALT_VER} \
                                                 salt-syndic=${SALT_VER} \
