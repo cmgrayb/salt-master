@@ -20,7 +20,9 @@ RUN apt-get install glibc-source=2.31-13+deb11u5 \
             dmidecode=3.3-2 \
             net-tools=1.60+git20181103.0eebece-1 \
             openssh-client=1:8.4p1-5+deb11u1 \
-            -y
+            -y \
+            && apt-get clean \
+            && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /etc/apt/keyrings
 RUN curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring.gpg "https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER}/salt-archive-keyring.gpg"
@@ -34,7 +36,9 @@ RUN apt-get install -t "o=SaltProject,a=stable" salt-master=${SALT_VER} \
                                                 salt-syndic=${SALT_VER} \
                                                 salt-cloud=${SALT_VER} \
                                                 salt-api=${SALT_VER} \
-                                                -y
+                                                -y \
+                                                && apt-get clean \
+                                                && rm -rf /var/lib/apt/lists/*
 COPY salt-services.sh /usr/bin
 RUN chmod +x /usr/bin/salt-services.sh
 
