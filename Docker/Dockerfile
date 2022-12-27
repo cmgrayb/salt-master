@@ -12,7 +12,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install latest available version of curl
 RUN apt-get update && \
-    apt-get install --no-install-recommends glibc-source=2.31-13+deb11u5 \
+    apt-get satisfy curl -y && \
+    apt-get install glibc-source=2.31-13+deb11u5 \
                                             curl=7.74.0-1.3+deb11u3 \
                                             bsdmainutils=12.1.7+nmu3 \
                                             dctrl-tools=2.24-3+b1 \
