@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "korekontrol.saltstack",
+        "vscode-icons-team.vscode-icons",
+        "mads-hartmann.bash-ide-vscode",
+        "samuelcolvin.jinjahtml",
+        "EditorConfig.EditorConfig",
+        "GitHub.vscode-pull-request-github",
+        "oderwat.indent-rainbow",
+        "DavidAnson.vscode-markdownlint",
+        "ms-python.python",
+        "warpnet.salt-lint",
+        "redhat.vscode-yaml"
+    ]
+}
