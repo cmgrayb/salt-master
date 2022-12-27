@@ -11,10 +11,12 @@
 		"ghcr.io/devcontainers-contrib/features/pre-commit:1": {},
 		"ghcr.io/devcontainers-contrib/features/pylint:1": {},
 		"ghcr.io/devcontainers-contrib/features/yamllint:1": {},
-		"ghcr.io/dhoeric/features/tfsec:1": {}
+		"ghcr.io/dhoeric/features/tfsec:1": {},
+		"ghcr.io/devcontainers/features/docker-from-docker:1": {}
 	},
 	//"postCreateCommand": "",
-	"postStartCommand": "git config --global --add safe.directory $PWD; pre-commit install"
+	"postStartCommand": "git config --global --add safe.directory $PWD; pre-commit install",
+    "remoteEnv": { "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}" }
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
