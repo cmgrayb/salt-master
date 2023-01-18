@@ -4,8 +4,8 @@ FROM debian:${DEBIAN_CODENAME}
 ARG DEBIAN_MAJOR_VER=11
 ARG SALT_MAJOR_VER=3005
 ARG SALT_MINOR_VER=1
-ARG SALT_BUILD="ds-1"
-ARG SALT_VER="${SALT_MAJOR_VER}.${SALT_MINOR_VER}+${SALT_BUILD}"
+ARG SALT_BUILD="3"
+ARG SALT_VER="${SALT_MAJOR_VER}.${SALT_MINOR_VER}-${SALT_BUILD}"
 
 # Safely fail in case of failure in piped command
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -26,17 +26,17 @@ RUN apt-get update && \
                                             && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /etc/apt/keyrings && \
-    curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring.gpg "https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER}/salt-archive-keyring.gpg" && \
-    echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.gpg arch=amd64] https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/${SALT_MAJOR_VER} bullseye main" | tee /etc/apt/sources.list.d/salt.list
+    curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring.gpg "https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/minor/${SALT_VER}/salt-archive-keyring.gpg" && \
+    echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.gpg arch=amd64] https://repo.saltproject.io/salt/py3/debian/${DEBIAN_MAJOR_VER}/amd64/minor/${SALT_VER} bullseye main" | tee /etc/apt/sources.list.d/salt.list
 
 # Second apt-get update required to fetch from repo.saltproject.io
 RUN apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/salt.list && \
-    apt-get install --no-install-recommends -t "o=SaltProject,a=stable" salt-master=${SALT_VER} \
-                                                                        salt-minion=${SALT_VER} \
-                                                                        salt-ssh=${SALT_VER} \
-                                                                        salt-syndic=${SALT_VER} \
-                                                                        salt-cloud=${SALT_VER} \
-                                                                        salt-api=${SALT_VER} \
+    apt-get install --no-install-recommends -t "o=SaltProject,a=stable" salt-master \
+                                                                        salt-minion \
+                                                                        salt-ssh \
+                                                                        salt-syndic \
+                                                                        salt-cloud \
+                                                                        salt-api \
                                                                         -y \
                                                                         && apt-get clean \
                                                                         && rm -rf /var/lib/apt/lists/*
